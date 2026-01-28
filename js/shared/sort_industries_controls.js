@@ -1,9 +1,9 @@
 import { subscribe1, setSortBy } from "./state.js";
 
 const OPTIONS = [
+  { label: "Growth", value: "growth" },
   { label: "2024 Openings", value: "2024" },
   { label: "2030 Openings", value: "2030" },
-  { label: "Growth", value: "growth" },
 ];
 
 export function mount_Sort_Industries_Controls(containerSelector) {
@@ -22,6 +22,7 @@ export function mount_Sort_Industries_Controls(containerSelector) {
       .style("display", "flex")
       .style("gap", "6px")
       .style("align-items", "center")
+      .style("white-space", "nowrap")
       .attr("title", `Sort by ${option.label}.`);
 
     label
@@ -33,7 +34,7 @@ export function mount_Sort_Industries_Controls(containerSelector) {
         if (this.checked) setSortBy(option.value);
       });
 
-    label.append("span").text(option.label);
+    label.append("span").text(option.label).style("white-space", "nowrap");
   });
 
   subscribe1(({ sortBy }) => {

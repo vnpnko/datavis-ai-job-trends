@@ -15,12 +15,21 @@ body {
   border-radius: 8px;
 }
 
-.controls-panel > div {
-  margin-bottom: 12px;
+.controls-panel h2 {
+  font-size: 18px;
+  margin: 0 0 10px 0;
 }
 
-.controls-panel > div:last-child {
-  margin-bottom: 0;
+.controls-section {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.controls-divider {
+  height: 1px;
+  background: #ddd;
+  margin: 6px 0;
 }
 
 .controls-panel input,

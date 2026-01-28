@@ -2,7 +2,7 @@ import { subscribe1, setSelectedJobTitles } from "./state.js";
 
 export function mount_Filter_Job_Titles_Controls(
   containerSelector,
-  allJobTitles,
+  allJobTitles
 ) {
   const minSelected = 2;
   const maxSelected = 5;
@@ -23,7 +23,14 @@ export function mount_Filter_Job_Titles_Controls(
     .style("display", "flex")
     .style("flex-direction", "row")
     .style("width", "100%")
-    .style("justify-content", "space-between");
+    .style("justify-content", "space-between")
+    .style("align-items", "center")
+    .style("flex-wrap", "nowrap");
+
+  filter_job_titles_header
+    .append("span")
+    .text("Job titles")
+    .style("white-space", "nowrap");
 
   const buttons = filter_job_titles_header
     .append("div")
@@ -61,7 +68,7 @@ export function mount_Filter_Job_Titles_Controls(
 
   const list = picker
     .append("div")
-    .style("height", "70px")
+    .style("height", "69px")
     .style("overflow-y", "auto")
     .style("border", "1px solid lightgrey")
     .style("width", "100%")
