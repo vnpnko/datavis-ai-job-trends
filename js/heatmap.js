@@ -34,7 +34,7 @@ export function create_Heatmap(jobsData) {
 
   const create_Heatmap_margin = { top: 40, right: 0, bottom: 0, left: 110 };
   const create_Heatmap_width =
-    550 - create_Heatmap_margin.left - create_Heatmap_margin.right;
+    600 - create_Heatmap_margin.left - create_Heatmap_margin.right;
   const create_Heatmap_height =
     350 - create_Heatmap_margin.top - create_Heatmap_margin.bottom;
 

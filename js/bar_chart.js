@@ -5,7 +5,7 @@ import {
 import { subscribe1, subscribe2, setHoveredIndustry } from "./shared/state.js";
 
 export function create_Bar_Chart(jobsData) {
-  const margin = { top: 40, right: 0, bottom: 0, left: 110 };
+  const margin = { top: 40, right: 0, bottom: 0, left: 0 };
   const width = 310 - margin.left - margin.right;
   const height = 350 - margin.top - margin.bottom;
 

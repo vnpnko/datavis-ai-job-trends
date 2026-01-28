@@ -61,7 +61,7 @@ body {
 
 #stacked_bar_legend {
   grid-area: legend;
-  justify-self: end;
+  justify-self: start;
   align-self: start;
   display: flex;
   flex-direction: column;
@@ -91,6 +91,7 @@ body {
 
 #bar_chart {
   grid-area: bar;
+  justify-self: start;
 }
 
 #stacked_bar_tooltip {
