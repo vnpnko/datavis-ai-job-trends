@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
   <head>
     <meta charset="utf-8" />
@@ -7,20 +7,22 @@
     <script src="https://d3js.org/d3.v6.js"></script>
   </head>
   <body>
-    <h2>Data Visualisation Project by Ivan Pylypenko</h2>
-
     <div class="stacked_bar_tooltip" id="stacked_bar_tooltip"></div>
 
-    <div style="display: flex; gap: 50px; margin-bottom: 20px">
-      <div id="sort_industries"></div>
-      <div id="filter_job_titles"></div>
-      <div id="location_controls"></div>
-    </div>
+    <div class="layout">
+      <div class="controls-panel">
+        <h2>Data Visualisation Project by Ivan Pylypenko</h2>
 
-    <div style="display: flex; gap: 50px">
-      <div id="bar_chart"></div>
-      <div id="stacked_bar_chart"></div>
-      <div id="heatmap"></div>
+        <div id="sort_industries"></div>
+        <div id="filter_job_titles"></div>
+        <div id="location_controls"></div>
+      </div>
+
+      <div class="charts-panel">
+        <div id="bar_chart"></div>
+        <div id="stacked_bar_chart"></div>
+        <div id="heatmap"></div>
+      </div>
     </div>
 
     <script type="module" src="js/app.js"></script>
