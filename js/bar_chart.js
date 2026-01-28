@@ -5,7 +5,7 @@ import {
 import { subscribe1, subscribe2, setHoveredIndustry } from "./shared/state.js";
 
 export function create_Bar_Chart(jobsData) {
-  const margin = { top: 40, right: 30, bottom: 0, left: 110 };
+  const margin = { top: 0, right: 30, bottom: 0, left: 110 };
   const width = 310 - margin.left - margin.right;
   const height = 360 - margin.top - margin.bottom;
 
@@ -28,13 +28,6 @@ export function create_Bar_Chart(jobsData) {
   g.append("g")
     .attr("class", "x-axis")
     .attr("transform", `translate(0, ${height})`);
-
-  g.append("text")
-    .attr("x", 0)
-    .attr("y", -20)
-    .attr("text-anchor", "left")
-    .style("font-size", "22px")
-    .text("Industry Job Openings");
 
   const x = d3.scaleLinear().range([0, width]);
 
@@ -129,7 +122,7 @@ export function create_Bar_Chart(jobsData) {
             d.Total_Job_Openings_2024) *
           100;
         return [d.Industry, pct];
-      }),
+      })
     );
 
     const pctLabels = pctG
@@ -159,7 +152,7 @@ export function create_Bar_Chart(jobsData) {
             const sign = pct >= 0 ? "+" : "";
             return `${sign}${pct.toFixed(2)}%`;
           }),
-        (exit) => exit.remove(),
+        (exit) => exit.remove()
       )
       .attr("y", (ind) => y(ind) + y.bandwidth() / 2);
 
@@ -176,7 +169,7 @@ export function create_Bar_Chart(jobsData) {
           .on("mouseover", (event, d) => setHoveredIndustry(d.Industry))
           .on("mouseout", () => setHoveredIndustry(null)),
       (update) => update,
-      (exit) => exit.remove(),
+      (exit) => exit.remove()
     );
 
     rectsJoin.attr("fill", (d) => d.color);

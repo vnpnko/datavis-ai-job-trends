@@ -32,7 +32,7 @@ export function create_Heatmap(jobsData) {
     });
   }
 
-  const create_Heatmap_margin = { top: 40, right: 0, bottom: 40, left: 110 };
+  const create_Heatmap_margin = { top: 0, right: 0, bottom: 40, left: 110 };
   const create_Heatmap_width =
     550 - create_Heatmap_margin.left - create_Heatmap_margin.right;
   const create_Heatmap_height =
@@ -47,18 +47,18 @@ export function create_Heatmap(jobsData) {
       "width",
       create_Heatmap_width +
         create_Heatmap_margin.left +
-        create_Heatmap_margin.right,
+        create_Heatmap_margin.right
     )
     .attr(
       "height",
       create_Heatmap_height +
         create_Heatmap_margin.top +
-        create_Heatmap_margin.bottom,
+        create_Heatmap_margin.bottom
     )
     .append("g")
     .attr(
       "transform",
-      `translate(${create_Heatmap_margin.left}, ${create_Heatmap_margin.top})`,
+      `translate(${create_Heatmap_margin.left}, ${create_Heatmap_margin.top})`
     );
 
   const xAxisG = heatmap_svg
@@ -66,14 +66,6 @@ export function create_Heatmap(jobsData) {
     .attr("transform", `translate(0, ${create_Heatmap_height})`);
 
   const yAxisG = heatmap_svg.append("g");
-
-  heatmap_svg
-    .append("text")
-    .attr("x", 0)
-    .attr("y", -20)
-    .attr("text-anchor", "left")
-    .style("font-size", "22px")
-    .text("Automation Risk by Job Title and Industry");
 
   function updateHeatmap(sortBy, selectedJobTitles, filteredJobs, trend) {
     const sortedIndustries = getSortedIndustries(sortBy, trend);
@@ -175,7 +167,7 @@ export function create_Heatmap(jobsData) {
               setHoveredPair(null);
             }),
         (update) => update,
-        (exit) => exit.remove(),
+        (exit) => exit.remove()
       )
       .attr("x", (d) => heatmap_x(d.Job_Title))
       .attr("y", (d) => heatmap_y(d.Industry))
@@ -184,7 +176,7 @@ export function create_Heatmap(jobsData) {
       .style("fill", (d) =>
         isFinite(d.Automation_Risk_Percent)
           ? myColor(d.Automation_Risk_Percent)
-          : "lightgrey",
+          : "lightgrey"
       );
 
     heatmap_svg
@@ -200,17 +192,17 @@ export function create_Heatmap(jobsData) {
             .style("font-size", "12px")
             .style("pointer-events", "none"),
         (update) => update,
-        (exit) => exit.remove(),
+        (exit) => exit.remove()
       )
       .attr("x", (d) => heatmap_x(d.Job_Title) + heatmap_x.bandwidth() / 2)
       .attr("y", (d) => heatmap_y(d.Industry) + heatmap_y.bandwidth() / 2)
       .style("fill", (d) =>
-        d.Automation_Risk_Percent > 60 ? "white" : "black",
+        d.Automation_Risk_Percent > 60 ? "white" : "black"
       )
       .text((d) =>
         isFinite(d.Automation_Risk_Percent)
           ? `${d.Automation_Risk_Percent.toFixed(2)}%`
-          : NaN,
+          : NaN
       );
   }
 
