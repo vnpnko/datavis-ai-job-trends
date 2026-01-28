@@ -54,7 +54,7 @@ export function create_Stacked_Bar_Chart(jobsData) {
   }
 
   const create_Stacked_Bar_Chart_margin = {
-    top: 0,
+    top: 10,
     right: 0,
     bottom: 0,
     left: 120,

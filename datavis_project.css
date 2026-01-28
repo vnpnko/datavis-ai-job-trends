@@ -16,7 +16,7 @@ body {
 }
 
 .controls-panel h2 {
-  font-size: 18px;
+  font-size: 24px;
   margin: 0 0 10px 0;
 }
 
@@ -55,18 +55,36 @@ body {
   grid-template-areas:
     "stacked ."
     "heatmap bar";
+  gap: 30px;
+  row-gap: 10px;
   align-items: stretch;
 }
 
-#stacked_bar_chart {
+.chart-block {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+
+.chart-title {
+  font-size: 20px;
+  text-align: center;
+  margin: 6px 0 0 120px;
+}
+
+.chart-title--right {
+  margin: 6px 0 0 20px;
+}
+
+#stacked_bar_container {
   grid-area: stacked;
 }
 
-#heatmap {
+#heatmap_container {
   grid-area: heatmap;
 }
 
-#bar_chart {
+#bar_chart_container {
   grid-area: bar;
   justify-self: start;
   align-self: start;
