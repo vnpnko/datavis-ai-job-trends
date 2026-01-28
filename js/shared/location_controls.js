@@ -9,15 +9,15 @@ export function mount_Location_Controls(containerSelector, countries) {
     .append("div")
     .style("display", "flex")
     .style("flex-direction", "column")
-    .style("gap", "14px")
-    .style("align-items", "flex-start");
-
-  location_controls.append("span").text("Filter by location:");
+    .style("gap", "8px")
+    .style("align-items", "flex-start")
+    .attr("title", "Filter jobs by location.");
 
   const select = location_controls
     .append("select")
-    .style("height", "28px")
-    .style("min-width", "220px");
+    .style("height", "26px")
+    .style("min-width", "220px")
+    .attr("title", "Select a location to filter jobs.");
 
   const options = ["All", ...countries];
 

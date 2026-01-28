@@ -64,7 +64,7 @@ export function create_Stacked_Bar_Chart(jobsData) {
     create_Stacked_Bar_Chart_margin.left -
     create_Stacked_Bar_Chart_margin.right;
   const create_Stacked_Bar_Chart_height =
-    300 -
+    200 -
     create_Stacked_Bar_Chart_margin.top -
     create_Stacked_Bar_Chart_margin.bottom;
 
