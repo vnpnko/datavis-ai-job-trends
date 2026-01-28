@@ -61,7 +61,7 @@ export function create_Heatmap(jobsData) {
       `translate(${create_Heatmap_margin.left}, ${create_Heatmap_margin.top})`
     );
 
-  const xAxisG = heatmap_svg.append("g").attr("transform", "translate(0, -20)");
+  const xAxisG = heatmap_svg.append("g").attr("transform", "translate(0, -10)");
 
   const yAxisG = heatmap_svg.append("g");
 

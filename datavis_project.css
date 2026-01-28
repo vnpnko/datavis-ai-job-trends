@@ -55,7 +55,6 @@ body {
   grid-template-areas:
     "stacked ."
     "heatmap bar";
-  gap: 30px;
   align-items: stretch;
 }
 
