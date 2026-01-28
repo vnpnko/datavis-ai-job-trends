@@ -1,4 +1,3 @@
-import { truncateTickText } from "./shared/truncate.js";
 import {
   buildIndustryTrend,
   getSortedIndustries,
@@ -51,25 +50,21 @@ export function create_Stacked_Bar_Chart(jobsData) {
       return d === hoveredPair.jobTitle ? "700" : "normal";
     });
 
-    yAxisG.selectAll(".tick text").style("font-weight", (d) => {
-      if (hoveredPair) return d === hoveredPair.industry ? "700" : "normal";
-      if (hoveredIndustry) return d === hoveredIndustry ? "700" : "normal";
-      return "normal";
-    });
+    yAxisG.selectAll("*").remove();
   }
 
   const create_Stacked_Bar_Chart_margin = {
     top: 0,
     right: 0,
-    bottom: 40,
-    left: 0,
+    bottom: 0,
+    left: 110,
   };
   const create_Stacked_Bar_Chart_width =
-    500 -
+    550 -
     create_Stacked_Bar_Chart_margin.left -
     create_Stacked_Bar_Chart_margin.right;
   const create_Stacked_Bar_Chart_height =
-    400 -
+    300 -
     create_Stacked_Bar_Chart_margin.top -
     create_Stacked_Bar_Chart_margin.bottom;
 
@@ -176,44 +171,9 @@ export function create_Stacked_Bar_Chart(jobsData) {
       .select(".legend-label")
       .text((d) => d);
 
-    xAxisG
-      .transition()
-      .duration(750)
-      .call(d3.axisBottom(stacked_bar_chart_x).tickSize(0))
-      .call((ax) => {
-        ax.select(".domain").attr("stroke", "none");
-        ax.selectAll("line").remove();
-        ax.selectAll("text").style("font-size", "14px");
-      })
-      .on("end", () => {
-        xAxisG.select(".domain").remove();
+    xAxisG.selectAll("*").remove();
 
-        xAxisG
-          .selectAll(".tick text")
-          .call(truncateTickText, stacked_bar_chart_x.bandwidth());
-
-        xAxisG
-          .selectAll(".tick text")
-          .style("cursor", "pointer")
-          .on("click", (event, d) => {
-            const filterInput = d3.select("#filter_job_titles input");
-            filterInput.property("value", d);
-            filterInput.dispatch("input");
-          });
-      });
-
-    yAxisG
-      .transition()
-      .duration(750)
-      .call(d3.axisLeft(stacked_bar_chart_y).tickSize(0))
-      .call((ax) => {
-        ax.select(".domain").attr("stroke", "none");
-        ax.selectAll("line").remove();
-        ax.selectAll("text").style("font-size", "14px");
-      })
-      .on("end", () => {
-        yAxisG.select(".domain").remove();
-      });
+    yAxisG.selectAll("*").remove();
 
     const layers = stacked_bar_chart_svg
       .selectAll("g.layer")

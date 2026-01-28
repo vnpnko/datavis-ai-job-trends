@@ -32,11 +32,11 @@ export function create_Heatmap(jobsData) {
     });
   }
 
-  const create_Heatmap_margin = { top: 0, right: 0, bottom: 40, left: 110 };
+  const create_Heatmap_margin = { top: 40, right: 0, bottom: 0, left: 110 };
   const create_Heatmap_width =
     550 - create_Heatmap_margin.left - create_Heatmap_margin.right;
   const create_Heatmap_height =
-    400 - create_Heatmap_margin.top - create_Heatmap_margin.bottom;
+    350 - create_Heatmap_margin.top - create_Heatmap_margin.bottom;
 
   d3.select("#heatmap").selectAll("svg").remove();
 
@@ -61,9 +61,7 @@ export function create_Heatmap(jobsData) {
       `translate(${create_Heatmap_margin.left}, ${create_Heatmap_margin.top})`
     );
 
-  const xAxisG = heatmap_svg
-    .append("g")
-    .attr("transform", `translate(0, ${create_Heatmap_height})`);
+  const xAxisG = heatmap_svg.append("g").attr("transform", "translate(0, -20)");
 
   const yAxisG = heatmap_svg.append("g");
 
@@ -112,7 +110,7 @@ export function create_Heatmap(jobsData) {
     xAxisG
       .transition()
       .duration(750)
-      .call(d3.axisBottom(heatmap_x).tickSize(0))
+      .call(d3.axisTop(heatmap_x).tickSize(0))
       .call((ax) => {
         ax.select(".domain").attr("stroke", "none");
         ax.selectAll("line").remove();

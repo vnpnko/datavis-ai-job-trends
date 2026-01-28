@@ -5,9 +5,9 @@ import {
 import { subscribe1, subscribe2, setHoveredIndustry } from "./shared/state.js";
 
 export function create_Bar_Chart(jobsData) {
-  const margin = { top: 0, right: 30, bottom: 0, left: 110 };
+  const margin = { top: 40, right: 0, bottom: 0, left: 110 };
   const width = 310 - margin.left - margin.right;
-  const height = 360 - margin.top - margin.bottom;
+  const height = 350 - margin.top - margin.bottom;
 
   d3.select("#bar_chart").selectAll("svg").remove();
 
@@ -102,18 +102,7 @@ export function create_Bar_Chart(jobsData) {
       .domain(sortedIndustries)
       .padding(0.1);
 
-    yAxisG
-      .transition()
-      .duration(750)
-      .call(d3.axisLeft(y).tickSize(0))
-      .call((ax) => {
-        ax.select(".domain").attr("stroke", "none");
-        ax.selectAll("line").remove();
-        ax.selectAll("text").style("font-size", "14px");
-      })
-      .on("end", () => {
-        yAxisG.select(".domain").remove();
-      });
+    yAxisG.selectAll("*").remove();
 
     const pctChangeByIndustry = new Map(
       trend.map((d) => {
