@@ -32,7 +32,7 @@ export function create_Heatmap(jobsData) {
     });
   }
 
-  const create_Heatmap_margin = { top: 40, right: 0, bottom: 0, left: 110 };
+  const create_Heatmap_margin = { top: 40, right: 0, bottom: 0, left: 120 };
   const create_Heatmap_width =
     600 - create_Heatmap_margin.left - create_Heatmap_margin.right;
   const create_Heatmap_height =
@@ -107,6 +107,14 @@ export function create_Heatmap(jobsData) {
       .domain([0, 100])
       .clamp(true);
 
+    const palette = d3.schemeTableau10;
+    const industryColor = d3
+      .scaleOrdinal()
+      .domain([0, sortedIndustries])
+      .range(
+        sortedIndustries.reverse().map((_, i) => palette[i % palette.length])
+      );
+
     xAxisG
       .transition()
       .duration(750)
@@ -133,6 +141,10 @@ export function create_Heatmap(jobsData) {
           });
       });
 
+    const markSize = 8;
+    const titleMarkGap = 4;
+    const markCellGap = 4;
+
     yAxisG
       .transition()
       .duration(750)
@@ -140,11 +152,38 @@ export function create_Heatmap(jobsData) {
       .call((ax) => {
         ax.select(".domain").attr("stroke", "none");
         ax.selectAll("line").remove();
-        ax.selectAll("text").style("font-size", "15px");
+        ax.selectAll("text")
+          .style("font-size", "15px")
+          .style("text-anchor", "end")
+          .attr("x", -(markSize + markCellGap + titleMarkGap));
       })
       .on("end", () => {
         yAxisG.select(".domain").remove();
       });
+
+    const industryMarks = heatmap_svg
+      .selectAll("g.industry-marks")
+      .data([null])
+      .join("g")
+      .attr("class", "industry-marks");
+
+    const markGap = 0;
+
+    industryMarks
+      .selectAll("rect.industry-mark")
+      .data(sortedIndustries, (d) => d)
+      .join(
+        (enter) => enter.append("rect").attr("class", "industry-mark"),
+        (update) => update,
+        (exit) => exit.remove()
+      )
+      .attr("x", -(markSize + markCellGap) - markGap)
+      .attr("y", (d) => heatmap_y(d) + heatmap_y.bandwidth() / 2 - markSize / 2)
+      .attr("width", markSize)
+      .attr("height", markSize)
+      .attr("rx", 2)
+      .attr("ry", 2)
+      .style("fill", (d) => industryColor(d));
 
     heatmap_svg
       .selectAll("rect.cell")

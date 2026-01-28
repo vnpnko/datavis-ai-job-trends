@@ -53,32 +53,10 @@ body {
   grid-template-columns: auto auto;
   grid-template-rows: auto auto;
   grid-template-areas:
-    "stacked legend"
+    "stacked bar"
     "heatmap bar";
   gap: 30px;
   align-items: stretch;
-}
-
-#stacked_bar_legend {
-  grid-area: legend;
-  justify-self: start;
-  align-self: start;
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
-
-#stacked_bar_legend .legend-item {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-#stacked_bar_legend .legend-swatch {
-  width: 12px;
-  height: 12px;
-  border-radius: 2px;
-  display: inline-block;
 }
 
 #stacked_bar_chart {
