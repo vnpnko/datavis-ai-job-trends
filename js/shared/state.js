@@ -1,5 +1,5 @@
 export const state1 = {
-  sortBy: "2024",
+  sortBy: "growth",
   selectedJobTitles: [
     "Investment analyst",
     "Software engineer",

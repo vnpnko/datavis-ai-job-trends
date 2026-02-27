@@ -32,11 +32,11 @@ export function create_Heatmap(jobsData) {
     });
   }
 
-  const create_Heatmap_margin = { top: 40, right: 0, bottom: 40, left: 110 };
+  const create_Heatmap_margin = { top: 30, right: 0, bottom: 0, left: 120 };
   const create_Heatmap_width =
-    550 - create_Heatmap_margin.left - create_Heatmap_margin.right;
+    600 - create_Heatmap_margin.left - create_Heatmap_margin.right;
   const create_Heatmap_height =
-    400 - create_Heatmap_margin.top - create_Heatmap_margin.bottom;
+    350 - create_Heatmap_margin.top - create_Heatmap_margin.bottom;
 
   d3.select("#heatmap").selectAll("svg").remove();
 
@@ -47,33 +47,23 @@ export function create_Heatmap(jobsData) {
       "width",
       create_Heatmap_width +
         create_Heatmap_margin.left +
-        create_Heatmap_margin.right,
+        create_Heatmap_margin.right
     )
     .attr(
       "height",
       create_Heatmap_height +
         create_Heatmap_margin.top +
-        create_Heatmap_margin.bottom,
+        create_Heatmap_margin.bottom
     )
     .append("g")
     .attr(
       "transform",
-      `translate(${create_Heatmap_margin.left}, ${create_Heatmap_margin.top})`,
+      `translate(${create_Heatmap_margin.left}, ${create_Heatmap_margin.top})`
     );
 
-  const xAxisG = heatmap_svg
-    .append("g")
-    .attr("transform", `translate(0, ${create_Heatmap_height})`);
+  const xAxisG = heatmap_svg.append("g").attr("transform", "translate(0, -10)");
 
   const yAxisG = heatmap_svg.append("g");
-
-  heatmap_svg
-    .append("text")
-    .attr("x", 0)
-    .attr("y", -20)
-    .attr("text-anchor", "left")
-    .style("font-size", "22px")
-    .text("Automation Risk by Job Title and Industry");
 
   function updateHeatmap(sortBy, selectedJobTitles, filteredJobs, trend) {
     const sortedIndustries = getSortedIndustries(sortBy, trend);
@@ -117,10 +107,18 @@ export function create_Heatmap(jobsData) {
       .domain([0, 100])
       .clamp(true);
 
+    const palette = d3.schemeTableau10;
+    const industryColor = d3
+      .scaleOrdinal()
+      .domain([0, sortedIndustries])
+      .range(
+        sortedIndustries.reverse().map((_, i) => palette[i % palette.length])
+      );
+
     xAxisG
       .transition()
       .duration(750)
-      .call(d3.axisBottom(heatmap_x).tickSize(0))
+      .call(d3.axisTop(heatmap_x).tickSize(0))
       .call((ax) => {
         ax.select(".domain").attr("stroke", "none");
         ax.selectAll("line").remove();
@@ -143,6 +141,10 @@ export function create_Heatmap(jobsData) {
           });
       });
 
+    const markSize = 8;
+    const titleMarkGap = 4;
+    const markCellGap = 4;
+
     yAxisG
       .transition()
       .duration(750)
@@ -150,11 +152,38 @@ export function create_Heatmap(jobsData) {
       .call((ax) => {
         ax.select(".domain").attr("stroke", "none");
         ax.selectAll("line").remove();
-        ax.selectAll("text").style("font-size", "15px");
+        ax.selectAll("text")
+          .style("font-size", "15px")
+          .style("text-anchor", "end")
+          .attr("x", -(markSize + markCellGap + titleMarkGap));
       })
       .on("end", () => {
         yAxisG.select(".domain").remove();
       });
+
+    const industryMarks = heatmap_svg
+      .selectAll("g.industry-marks")
+      .data([null])
+      .join("g")
+      .attr("class", "industry-marks");
+
+    const markGap = 0;
+
+    industryMarks
+      .selectAll("rect.industry-mark")
+      .data(sortedIndustries, (d) => d)
+      .join(
+        (enter) => enter.append("rect").attr("class", "industry-mark"),
+        (update) => update,
+        (exit) => exit.remove()
+      )
+      .attr("x", -(markSize + markCellGap) - markGap)
+      .attr("y", (d) => heatmap_y(d) + heatmap_y.bandwidth() / 2 - markSize / 2)
+      .attr("width", markSize)
+      .attr("height", markSize)
+      .attr("rx", 2)
+      .attr("ry", 2)
+      .style("fill", (d) => industryColor(d));
 
     heatmap_svg
       .selectAll("rect.cell")
@@ -175,7 +204,7 @@ export function create_Heatmap(jobsData) {
               setHoveredPair(null);
             }),
         (update) => update,
-        (exit) => exit.remove(),
+        (exit) => exit.remove()
       )
       .attr("x", (d) => heatmap_x(d.Job_Title))
       .attr("y", (d) => heatmap_y(d.Industry))
@@ -184,7 +213,7 @@ export function create_Heatmap(jobsData) {
       .style("fill", (d) =>
         isFinite(d.Automation_Risk_Percent)
           ? myColor(d.Automation_Risk_Percent)
-          : "lightgrey",
+          : "lightgrey"
       );
 
     heatmap_svg
@@ -200,17 +229,17 @@ export function create_Heatmap(jobsData) {
             .style("font-size", "12px")
             .style("pointer-events", "none"),
         (update) => update,
-        (exit) => exit.remove(),
+        (exit) => exit.remove()
       )
       .attr("x", (d) => heatmap_x(d.Job_Title) + heatmap_x.bandwidth() / 2)
       .attr("y", (d) => heatmap_y(d.Industry) + heatmap_y.bandwidth() / 2)
       .style("fill", (d) =>
-        d.Automation_Risk_Percent > 60 ? "white" : "black",
+        d.Automation_Risk_Percent > 60 ? "white" : "black"
       )
       .text((d) =>
         isFinite(d.Automation_Risk_Percent)
           ? `${d.Automation_Risk_Percent.toFixed(2)}%`
-          : NaN,
+          : NaN
       );
   }
 

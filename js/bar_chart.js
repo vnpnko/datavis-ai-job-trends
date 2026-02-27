@@ -5,9 +5,9 @@ import {
 import { subscribe1, subscribe2, setHoveredIndustry } from "./shared/state.js";
 
 export function create_Bar_Chart(jobsData) {
-  const margin = { top: 40, right: 30, bottom: 0, left: 110 };
+  const margin = { top: 30, right: 0, bottom: 0, left: 20 };
   const width = 310 - margin.left - margin.right;
-  const height = 360 - margin.top - margin.bottom;
+  const height = 350 - margin.top - margin.bottom;
 
   d3.select("#bar_chart").selectAll("svg").remove();
 
@@ -24,19 +24,21 @@ export function create_Bar_Chart(jobsData) {
   const barsG = g.append("g").attr("class", "bars");
   const pctG = g.append("g").attr("class", "pct-labels");
   const yAxisG = g.append("g").attr("class", "y-axis");
+  const hoverLine = g
+    .append("line")
+    .attr("class", "hover-left")
+    .attr("stroke", "black")
+    .attr("stroke-width", 3)
+    .style("pointer-events", "none")
+    .style("opacity", 0);
 
   g.append("g")
     .attr("class", "x-axis")
     .attr("transform", `translate(0, ${height})`);
 
-  g.append("text")
-    .attr("x", 0)
-    .attr("y", -20)
-    .attr("text-anchor", "left")
-    .style("font-size", "22px")
-    .text("Industry Job Openings");
-
   const x = d3.scaleLinear().range([0, width]);
+  let currentY = null;
+  let lastHover = { hoveredIndustry: null, hoveredPair: null };
 
   function buildBarChartData(trend) {
     const data = [];
@@ -88,10 +90,18 @@ export function create_Bar_Chart(jobsData) {
   }
 
   function applyBarHover(hoveredIndustry) {
-    yAxisG.selectAll(".tick text").style("font-weight", (d) => {
-      if (!hoveredIndustry) return "normal";
-      return d === hoveredIndustry ? "700" : "normal";
-    });
+    const industry = hoveredIndustry ?? lastHover.hoveredPair?.industry ?? null;
+    if (!industry || !currentY) {
+      hoverLine.style("opacity", 0);
+      return;
+    }
+
+    hoverLine
+      .attr("x1", x(0))
+      .attr("x2", x(0))
+      .attr("y1", currentY(industry))
+      .attr("y2", currentY(industry) + currentY.bandwidth())
+      .style("opacity", 1);
   }
 
   function updateChart(sortBy, filteredJobs) {
@@ -108,19 +118,9 @@ export function create_Bar_Chart(jobsData) {
       .range([0, height])
       .domain(sortedIndustries)
       .padding(0.1);
+    currentY = y;
 
-    yAxisG
-      .transition()
-      .duration(750)
-      .call(d3.axisLeft(y).tickSize(0))
-      .call((ax) => {
-        ax.select(".domain").attr("stroke", "none");
-        ax.selectAll("line").remove();
-        ax.selectAll("text").style("font-size", "14px");
-      })
-      .on("end", () => {
-        yAxisG.select(".domain").remove();
-      });
+    yAxisG.selectAll("*").remove();
 
     const pctChangeByIndustry = new Map(
       trend.map((d) => {
@@ -173,8 +173,19 @@ export function create_Bar_Chart(jobsData) {
           .append("rect")
           .style("stroke-width", 2)
           .style("stroke", "none")
-          .on("mouseover", (event, d) => setHoveredIndustry(d.Industry))
-          .on("mouseout", () => setHoveredIndustry(null)),
+          .on("mouseover", function (event, d) {
+            hoverLine
+              .attr("x1", x(0))
+              .attr("x2", x(0))
+              .attr("y1", y(d.Industry))
+              .attr("y2", y(d.Industry) + y.bandwidth())
+              .style("opacity", 1);
+            setHoveredIndustry(d.Industry);
+          })
+          .on("mouseout", function () {
+            hoverLine.style("opacity", 0);
+            setHoveredIndustry(null);
+          }),
       (update) => update,
       (exit) => exit.remove(),
     );
@@ -197,5 +208,8 @@ export function create_Bar_Chart(jobsData) {
     updateChart(sortBy, filteredJobs);
   });
 
-  subscribe2(({ hoveredIndustry }) => applyBarHover(hoveredIndustry));
+  subscribe2(({ hoveredIndustry, hoveredPair }) => {
+    lastHover = { hoveredIndustry, hoveredPair };
+    applyBarHover(hoveredIndustry);
+  });
 }

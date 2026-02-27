@@ -2,7 +2,7 @@ import { subscribe1, setSelectedJobTitles } from "./state.js";
 
 export function mount_Filter_Job_Titles_Controls(
   containerSelector,
-  allJobTitles,
+  allJobTitles
 ) {
   const minSelected = 2;
   const maxSelected = 5;
@@ -13,21 +13,24 @@ export function mount_Filter_Job_Titles_Controls(
     .select(containerSelector)
     .style("display", "flex")
     .style("flex-direction", "column")
-    .style("gap", "14px")
+    .style("gap", "8px")
     .style("align-items", "flex-start")
-    .style("width", "340px");
+    .style("width", "100%")
+    .attr("title", "Filter job titles (select 2 to 5).");
 
   const filter_job_titles_header = filter_job_titles
     .append("div")
     .style("display", "flex")
     .style("flex-direction", "row")
     .style("width", "100%")
-    .style("justify-content", "space-between");
+    .style("justify-content", "space-between")
+    .style("align-items", "center")
+    .style("flex-wrap", "nowrap");
 
   filter_job_titles_header
     .append("span")
-    .text("Filter jobs:")
-    .style("align-content", "center");
+    .text("Job titles")
+    .style("white-space", "nowrap");
 
   const buttons = filter_job_titles_header
     .append("div")
@@ -39,13 +42,15 @@ export function mount_Filter_Job_Titles_Controls(
     .append("button")
     .text("Add")
     .property("disabled", true)
-    .style("height", "25px");
+    .style("height", "24px")
+    .attr("title", "Add the selected job title.");
 
   const removeBtn = buttons
     .append("button")
     .text("Remove")
     .property("disabled", true)
-    .style("height", "25px");
+    .style("height", "24px")
+    .attr("title", "Remove the selected job title.");
 
   const picker = filter_job_titles
     .append("div")
@@ -58,13 +63,16 @@ export function mount_Filter_Job_Titles_Controls(
     .append("input")
     .attr("type", "text")
     .attr("placeholder", "Write a job title")
-    .style("height", "25px");
+    .style("height", "24px")
+    .attr("title", "Type to filter job titles, then choose one.");
 
   const list = picker
     .append("div")
-    .style("height", "80px")
+    .style("height", "69px")
     .style("overflow-y", "auto")
-    .style("border", "1px solid lightgrey");
+    .style("border", "1px solid lightgrey")
+    .style("width", "100%")
+    .attr("title", "Click a job title to select it.");
 
   function getInputValue() {
     return filterInput.property("value").trim();
@@ -86,7 +94,7 @@ export function mount_Filter_Job_Titles_Controls(
       .enter()
       .append("div")
       .attr("class", "job-item")
-      .style("padding", "2px")
+      .style("padding", "2px 4px")
       .style("cursor", "pointer")
       .style("background", "transparent")
       .style("border-bottom", "1px solid lightgrey")

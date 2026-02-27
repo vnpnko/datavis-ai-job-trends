@@ -2,6 +2,94 @@ body {
   margin: 20px;
 }
 
+.layout {
+  display: flex;
+  gap: 50px;
+  align-items: flex-start;
+}
+
+.controls-panel {
+  width: 300px;
+  background: #f5f5f5;
+  padding: 12px;
+  border-radius: 8px;
+}
+
+.controls-panel h2 {
+  font-size: 24px;
+  margin: 0 0 10px 0;
+}
+
+.controls-section {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.controls-divider {
+  height: 1px;
+  background: #ddd;
+  margin: 6px 0;
+}
+
+.controls-panel input,
+.controls-panel select,
+.controls-panel button {
+  font-size: 13px;
+}
+
+.controls-panel input,
+.controls-panel select {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.controls-panel button {
+  padding: 2px 8px;
+}
+
+.charts-panel {
+  display: grid;
+  grid-template-columns: auto auto;
+  grid-template-rows: auto auto;
+  grid-template-areas:
+    "stacked ."
+    "heatmap bar";
+  gap: 30px;
+  row-gap: 10px;
+  align-items: stretch;
+}
+
+.chart-block {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+
+.chart-title {
+  font-size: 20px;
+  text-align: center;
+  margin: 6px 0 0 120px;
+}
+
+.chart-title--right {
+  margin: 6px 0 0 20px;
+}
+
+#stacked_bar_container {
+  grid-area: stacked;
+}
+
+#heatmap_container {
+  grid-area: heatmap;
+}
+
+#bar_chart_container {
+  grid-area: bar;
+  justify-self: start;
+  align-self: start;
+}
+
 #stacked_bar_tooltip {
   position: absolute;
   padding: 10px 12px;

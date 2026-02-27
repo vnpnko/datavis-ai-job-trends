@@ -1,9 +1,9 @@
 import { subscribe1, setSortBy } from "./state.js";
 
 const OPTIONS = [
+  { label: "Growth", value: "growth" },
   { label: "2024 Openings", value: "2024" },
   { label: "2030 Openings", value: "2030" },
-  { label: "Growth", value: "growth" },
 ];
 
 export function mount_Sort_Industries_Controls(containerSelector) {
@@ -11,10 +11,9 @@ export function mount_Sort_Industries_Controls(containerSelector) {
     .select(containerSelector)
     .style("display", "flex")
     .style("flex-direction", "column")
-    .style("gap", "14px")
-    .style("align-items", "flex-start");
-
-  sort_industries.append("span").text("Sort industries:");
+    .style("gap", "8px")
+    .style("align-items", "flex-start")
+    .attr("title", "Sort industries by openings or growth.");
 
   OPTIONS.forEach((option) => {
     const label = sort_industries
@@ -22,7 +21,9 @@ export function mount_Sort_Industries_Controls(containerSelector) {
       .style("cursor", "pointer")
       .style("display", "flex")
       .style("gap", "6px")
-      .style("align-items", "center");
+      .style("align-items", "center")
+      .style("white-space", "nowrap")
+      .attr("title", `Sort by ${option.label}.`);
 
     label
       .append("input")
@@ -33,7 +34,7 @@ export function mount_Sort_Industries_Controls(containerSelector) {
         if (this.checked) setSortBy(option.value);
       });
 
-    label.append("span").text(option.label);
+    label.append("span").text(option.label).style("white-space", "nowrap");
   });
 
   subscribe1(({ sortBy }) => {
