@@ -5,7 +5,7 @@ import {
 import { subscribe1, subscribe2, setHoveredIndustry } from "./shared/state.js";
 
 export function create_Bar_Chart(jobsData) {
-  const margin = { top: 40, right: 0, bottom: 0, left: 20 };
+  const margin = { top: 30, right: 0, bottom: 0, left: 20 };
   const width = 310 - margin.left - margin.right;
   const height = 350 - margin.top - margin.bottom;
 
@@ -129,7 +129,7 @@ export function create_Bar_Chart(jobsData) {
             d.Total_Job_Openings_2024) *
           100;
         return [d.Industry, pct];
-      })
+      }),
     );
 
     const pctLabels = pctG
@@ -159,7 +159,7 @@ export function create_Bar_Chart(jobsData) {
             const sign = pct >= 0 ? "+" : "";
             return `${sign}${pct.toFixed(2)}%`;
           }),
-        (exit) => exit.remove()
+        (exit) => exit.remove(),
       )
       .attr("y", (ind) => y(ind) + y.bandwidth() / 2);
 
@@ -187,7 +187,7 @@ export function create_Bar_Chart(jobsData) {
             setHoveredIndustry(null);
           }),
       (update) => update,
-      (exit) => exit.remove()
+      (exit) => exit.remove(),
     );
 
     rectsJoin.attr("fill", (d) => d.color);
